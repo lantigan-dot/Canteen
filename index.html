@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Столовая — Система заказов v7.0.0</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- ========================================= -->
+  <!-- ЭКРАН АВТОРИЗАЦИИ -->
+  <!-- ========================================= -->
+  <div id="authShell" class="auth-shell">
+    <div class="auth-container">
+      <h1>Вход в систему</h1>
+      <form id="authForm">
+        <label>
+          Email
+          <input type="email" id="authEmail" required placeholder="email@example.com">
+        </label>
+
+        <label>
+          Пароль
+          <input type="password" id="authPassword" required placeholder="Минимум 6 символов">
+        </label>
+
+        <label>
+          Роль
+          <select id="authRole" required>
+            <option value="admin">Администратор</option>
+            <option value="staff">Персонал</option>
+            <option value="visitor">Посетитель</option>
+          </select>
+        </label>
+
+        <button type="submit">Войти</button>
+      </form>
+
+      <div class="auth-hint">
+        <p><strong>Тестовые аккаунты:</strong></p>
+        <p>Admin: r@r / 002758</p>
+        <p>Staff: s@s / 002758</p>
+        <p>Visitor: v@v / 002758</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================= -->
+  <!-- ГЛАВНОЕ ПРИЛОЖЕНИЕ -->
+  <!-- ========================================= -->
+  <div id="appShell" class="app-shell hidden">
+
+    <!-- ШАПКА -->
+    <header class="app-header">
+      <h1>Столовая v7.0.0</h1>
+      <div class="user-info">
+        <span id="userName">Пользователь</span>
+        <span id="userRoleLabel" class="badge">Роль</span>
+        <button id="logoutBtn">Выйти</button>
+      </div>
+    </header>
+
+    <!-- ОСНОВНОЙ КОНТЕНТ -->
+    <main class="app-content">
+
+      <!-- НАВИГАЦИЯ -->
+      <nav id="appNav" class="app-nav">
+        <!-- Заполняется динамически в зависимости от роли -->
+      </nav>
+
+      <!-- КОНТЕЙНЕР ДЛЯ КОНТЕНТА -->
+      <div id="contentContainer" class="content-container">
+
+        <!-- ========================================= -->
+        <!-- ADMIN: ЛИНЕЙКА ЗАКАЗОВ -->
+        <!-- ========================================= -->
+        <section id="adminOrdersView" class="view">
+          <h2>Линейка заказов</h2>
+          <div id="ordersLine" class="orders-line">
+            <!-- Заполняется через Admin.orders.render() -->
+          </div>
+        </section>
+
+        <!-- ========================================= -->
+        <!-- ADMIN: БЛЮДА -->
+        <!-- ========================================= -->
+        <section id="adminDishesView" class="view hidden">
+          <h2>Управление блюдами</h2>
+          <button onclick="Admin.dishes.add()">Добавить блюдо</button>
+          <div id="dishList" class="dish-list">
+            <!-- Заполняется через Admin.dishes.render() -->
+          </div>
+        </section>
+
+        <!-- ========================================= -->
+        <!-- ADMIN: МЕНЮ -->
+        <!-- ========================================= -->
+        <section id="adminMenusView" class="view hidden">
+          <h2>Управление меню</h2>
+          <button onclick="Admin.menus.create()">Создать меню</button>
+          <div id="menuList" class="menu-list">
+            <!-- Заполняется через Admin.menus.render() -->
+          </div>
+        </section>
+
+        <!-- ========================================= -->
+        <!-- ADMIN: ПОЛЬЗОВАТЕЛИ -->
+        <!-- ========================================= -->
+        <section id="adminUsersView" class="view hidden">
+          <h2>Управление пользователями</h2>
+          <div id="usersAdminList" class="users-list">
+            <!-- Заполняется через Admin.users.render() -->
+          </div>
+        </section>
+
+        <!-- ========================================= -->
+        <!-- STAFF: ЛИНЕЙКА ЗАКАЗОВ -->
+        <!-- ========================================= -->
+        <section id="staffOrdersView" class="view hidden">
+          <h2>Заказы (Кухня)</h2>
+          <div id="ordersLine" class="orders-line">
+            <!-- Заполняется через Staff.orders.render() -->
+          </div>
+        </section>
+
+        <!-- ========================================= -->
+        <!-- VISITOR: МЕНЮ -->
+        <!-- ========================================= -->
+        <section id="visitorMenuView" class="view hidden">
+          <h2>Меню</h2>
+          <div id="visitorDateTabs" class="date-tabs">
+            <!-- Заполняется через Visitor.menu.render() -->
+          </div>
+          <div id="visitorMenuGrid" class="menu-grid">
+            <!-- Заполняется через Visitor.menu.selectDate() -->
+          </div>
+          <div id="visitorCart" class="cart">
+            <!-- Заполняется через Visitor.cart.render() -->
+          </div>
+        </section>
+
+        <!-- ========================================= -->
+        <!-- VISITOR: МОИ ЗАКАЗЫ -->
+        <!-- ========================================= -->
+        <section id="visitorOrdersView" class="view hidden">
+          <h2>Мои заказы</h2>
+          <div id="paymentTimeline" class="payment-timeline">
+            <!-- Заполняется через Visitor.orders.render() -->
+          </div>
+        </section>
+
+      </div>
+    </main>
+
+  </div>
+
+  <!-- ========================================= -->
+  <!-- ПОДКЛЮЧЕНИЕ СКРИПТОВ -->
+  <!-- ========================================= -->
+  <!-- ВАЖНО: Порядок имеет значение! -->
+
+  <script src="scripts/shared.js"></script>    <!-- 1. Утилиты -->
+  <script src="scripts/database.js"></script>  <!-- 2. База данных -->
+  <script src="scripts/auth.js"></script>      <!-- 3. Авторизация -->
+  <script src="scripts/admin.js"></script>     <!-- 4. Admin модуль -->
+  <script src="scripts/staff.js"></script>     <!-- 5. Staff модуль -->
+  <script src="scripts/visitor.js"></script>   <!-- 6. Visitor модуль -->
+  <script src="scripts/main.js"></script>      <!-- 7. Инициализация -->
+
+</body>
+</html>
