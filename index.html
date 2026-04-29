@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Столовая — v7.0.0 HYBRID (с дизайном v3.7.8)</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <div id="authShell" class="auth-shell">
+    <div class="auth-layout">
+      <section class="auth-showcase">
+        <div class="brand">
+          <div class="brand-mark" aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 4v8a2 2 0 0 0 4 0V4"/><path d="M8 4v8"/><path d="M11 4v8"/><path d="M16 4v16"/><path d="M16 9c2 0 3-1.6 3-3.5S18 2 16 2"/></svg>
+          </div>
+          <div>
+            <h1>Столовая</h1>
+            <div class="app-version">Версия: 3.7.8-FINAL</div>
+            <p>Регистрация, вход и роли пользователей</p>
+          </div>
+        </div>
+        <div class="info-list">
+          <div class="info-row"><strong>Администратор</strong><p>Создаёт блюда, меню по дням и управляет календарём публикации.</p></div>
+          <div class="info-row"><strong>Сотрудник</strong><p>Видит только оплаченные заказы и ведёт линейку приготовления.</p></div>
+          <div class="info-row"><strong>Посетитель</strong><p>Выбирает меню, время готовности, способ оплаты и оформляет заказ.</p></div>
+        </div>
+        <span class="auth-note">Сессия запоминается в системе, пока пользователь сам не выйдет из аккаунта.</span>
+      </section>
+      <section class="auth-card">
+        <div>
+          <h2 id="authTitle">Вход в систему</h2>
+          <p id="authSubtitle">Сначала зарегистрируйтесь по роли, затем входите в свой аккаунт.</p>
+        </div>
+        <div class="auth-tabs" id="authModeTabs">
+          <button class="auth-tab active" data-auth-mode="login">Вход</button>
+          <button class="auth-tab" data-auth-mode="register">Регистрация</button>
+        </div>
+        <form id="authForm" class="field-grid">
+          <div class="field">
+  <label>Роль</label>
+  <input type="hidden" id="authRole" value="admin" />
+  <div id="rolePills" style="display:grid;grid-template-columns:repeat(3,1fr);gap:var(--space-2);">
+    <button type="button" class="role-pill active" data-role="admin" style="padding:0.6rem 0.25rem;border-radius:var(--radius-full);border:1.5px solid var(--color-primary);background:var(--color-primary);color:#fff;font-size:13px;font-weight:600;cursor:pointer;transition:all 180ms;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Администратор</button>
+    <button type="button" class="role-pill" data-role="staff" style="padding:0.6rem 0.25rem;border-radius:var(--radius-full);border:1.5px solid var(--color-border);background:var(--color-surface);color:var(--color-text);font-size:13px;font-weight:500;cursor:pointer;transition:all 180ms;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Сотрудник</button>
+    <button type="button" class="role-pill" data-role="visitor" style="padding:0.6rem 0.25rem;border-radius:var(--radius-full);border:1.5px solid var(--color-border);background:var(--color-surface);color:var(--color-text);font-size:13px;font-weight:500;cursor:pointer;transition:all 180ms;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Посетитель</button>
+  </div>
+</div>
+          <div class="field"><label for="authName">Имя</label><input id="authName" placeholder="Ваше имя" /></div>
+          <div class="field"><label for="authEmail">Email</label><input id="authEmail" type="email" placeholder="name@example.com" required /></div>
+          <div class="field"><label for="authPassword">Пароль</label><input id="authPassword" type="password" placeholder="Минимум 6 символов" required /></div>
+          <button type="submit" class="btn btn-primary" id="authSubmitBtn">Войти</button>
+        </form>
+        <div class="info-row"><strong>Демо</strong><p>Можно зарегистрировать отдельные аккаунты для администратора, сотрудника и посетителя, после чего входить под каждой ролью отдельно.</p></div>
+        <div id="authMessage" class="auth-note">Аккаунт ещё не выбран.</div>
+      </section>
+    </div>
+  </div>
+
+  <div id="appShell" class="app-shell">
+    <a class="sr-only" href="#main-content">Перейти к содержанию</a>
+    <div class="app">
+      <aside class="sidebar" aria-label="Основная навигация">
+        <div class="sidebar-sticky-top">
+        <div class="brand">
+          <div class="brand-mark" aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 4v8a2 2 0 0 0 4 0V4"/><path d="M8 4v8"/><path d="M11 4v8"/><path d="M16 4v16"/><path d="M16 9c2 0 3-1.6 3-3.5S18 2 16 2"/></svg>
+          </div>
+          <div class="brand-copy"><h1>Столовая</h1>
+            <div class="app-version">Версия: 3.7.8-FINAL</div><p>Роли и заказы</p></div>
+          <button class="sidebar-toggle" id="sidebarToggle" aria-label="Меню" aria-expanded="false" style="display:none;margin-left:auto;width:40px;height:40px;border-radius:var(--radius-full);border:1px solid var(--color-border);background:var(--color-surface);align-items:center;justify-content:center;flex-shrink:0;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+          </button>
+        </div>
+        <div id="mobileSidebarUser" style="display:none;align-items:center;justify-content:space-between;gap:var(--space-3);padding:var(--space-2) 0;border-top:1px solid var(--color-divider);margin-top:var(--space-2);">
+          <div style="display:flex;align-items:center;gap:var(--space-2);">
+            <div class="user-avatar" id="mobileUserAvatar" style="width:32px;height:32px;font-size:13px;">А</div>
+            <div>
+              <div style="font-size:var(--text-sm);font-weight:600;line-height:1.2;" id="mobileUserName">Пользователь</div>
+              <div style="font-size:11px;color:var(--color-text-muted);" id="mobileUserRole">Роль</div>
+            </div>
+          </div>
+          <button class="btn btn-secondary" id="mobileLogoutBtn" style="padding:0.5rem 0.75rem;font-size:12px;min-height:34px;white-space:nowrap;">Выйти</button>
+        </div>
+        <div id="sidebarNav">
+          <div>
+          <div class="nav-section-title">Роль</div>
+          <div class="role-list" id="roleList"></div>
+        </div>
+        <div>
+          <div class="nav-section-title">Разделы</div>
+          <nav class="nav-list" id="navList"></nav>
+        </div>
+        </div>
+        </div>
+        <div class="mini-card user-card">
+          <div style="display:flex;gap:var(--space-3);align-items:center;">
+            <div class="user-avatar" id="userAvatar">А</div>
+            <div>
+              <strong id="userName">Пользователь</strong>
+              <div class="user-meta" id="userRoleLabel">Роль</div>
+            </div>
+          </div>
+          <p id="roleInfoText">Описание роли.</p>
+          <button class="btn btn-secondary" id="logoutBtn">Выйти из аккаунта</button>
+        </div>
+      </aside>
+
+      <header class="header">
+        <div class="header-title"><h2 id="pageTitle">Обзор столовой</h2><p id="pageSubtitle">Каталог блюд, меню по дням, заказы и статусы оплаты.</p></div>
+        <div class="header-actions">
+          <label class="search" aria-label="Поиск блюда"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg><input id="globalSearch" type="search" placeholder="Поиск по блюдам, меню и заказам" /></label>
+          <button class="btn btn-secondary" id="quickMenuBtn">Создать меню</button>
+          <button class="btn btn-primary" id="quickDishBtn">Добавить блюдо</button>
+          <button class="theme-toggle" data-theme-toggle aria-label="Переключить тему"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></button>
+        </div>
+      </header>
+
+      <main class="main" id="main-content">
+        <section class="view active" id="view-dashboard">
+          <div class="grid-top">
+            <article class="stat-card"><span>Блюд в справочнике</span><strong id="statDishes">18</strong><small>Из них активных: <span id="statActive">16</span></small></article>
+            <article class="stat-card"><span>Меню в месяце</span><strong id="statMenus">12</strong><small>Черновиков: <span id="statDrafts">4</span></small></article>
+            <article class="stat-card"><span>Заказов на сегодня</span><strong id="statOrders">27</strong><small>Оплачено: <span id="statPaid">18</span></small></article>
+            <article class="stat-card"><span>Ближайшая публикация</span><strong id="statNext">25 апр</strong><small>Пятница, бизнес-ланч</small></article>
+          </div>
+          <div class="dashboard-grid">
+            <article class="panel"><div class="panel-header"><div><h3>Сегодняшнее меню</h3><p>Меню собирается из справочника блюд.</p></div><span class="status-badge published">Опубликовано</span></div><div class="menu-groups" id="todayMenuGroups"></div></article>
+            <article class="panel"><div class="panel-header"><div><h3>Последние действия</h3><p>Главные события ролей и заказов.</p></div></div><div class="info-list" id="recentActionsList" style="min-height:180px;max-height:420px;overflow-y:auto;"><div class="info-row"><strong>Журнал действий загружается</strong><p>После сохранения черновика, публикации меню и других операций события появятся здесь.</p></div></div></article>
+          </div>
+        </section>
+
+        <section class="view" id="view-dishes">
+          <div class="toolbar"><div><h3 style="font-size:var(--text-lg);font-weight:700;">Справочник блюд</h3><p class="muted">Администратор добавляет блюда, загружает фото и управляет статусом.</p></div><div class="filters" id="dishFilters"></div></div>
+          <div class="split split-single" style="width:100%;">
+          <div class="split">
+            <article class="panel"><div class="panel-header"><div><h3>Каталог</h3><p>Все блюда доступны для включения в меню дней и в заказы посетителей.</p></div></div><div class="list" id="dishList"></div></article>
+          </div>
+        </section>
+
+        <section class="view" id="view-menus">
+          <div class="toolbar"><div><h3 style="font-size:var(--text-lg);font-weight:700;">Меню по дням</h3><p class="muted">Нажмите на дату в календаре, чтобы открыть или создать меню.</p></div><div class="row-actions"><button class="btn btn-secondary" id="copyPrevMenu">Копировать вчерашнее</button><button class="btn btn-primary" id="saveMenuDraft">Сохранить черновик</button></div></div>
+
+          <!-- CALENDAR TOP -->
+          <article class="panel" style="margin-bottom:var(--space-4);">
+            <div class="panel-header" style="flex-wrap:wrap;gap:var(--space-2);">
+              <div><h3>Сохранённые меню</h3><p style="font-size:var(--text-xs);color:var(--color-text-muted);">Нажмите на дату — откроется конструктор</p></div>
+              <div style="display:flex;gap:var(--space-2);align-items:center;margin-left:auto;">
+                <button type="button" id="menuCalPrev" style="width:32px;height:32px;border-radius:var(--radius-full);border:1px solid var(--color-border);background:var(--color-surface);cursor:pointer;font-size:16px;">‹</button>
+                <strong id="menuCalMonthLabel" style="font-size:var(--text-sm);min-width:110px;text-align:center;"></strong>
+                <button type="button" id="menuCalNext" style="width:32px;height:32px;border-radius:var(--radius-full);border:1px solid var(--color-border);background:var(--color-surface);cursor:pointer;font-size:16px;">›</button>
+              </div>
+            </div>
+            <div id="menuCalWeekdays" style="display:grid;grid-template-columns:repeat(7,1fr);text-align:center;padding:0 var(--space-3) 4px;"></div>
+            <div id="menuCalGrid" style="display:grid;grid-template-columns:repeat(7,1fr);gap:3px;padding:var(--space-3);"></div>
+          </article>
+
+          <!-- CONSTRUCTOR (shown after date selected) -->
+          <article class="panel menu-builder" id="menuConstructor">
+            <div class="panel-header">
+              <div>
+                <h3 id="menuConstructorTitle">Конструктор меню</h3>
+                <p id="menuConstructorSubtitle" style="color:var(--color-text-muted);font-size:var(--text-xs);">Выберите дату в календаре выше</p>
+              </div>
+            </div>
+            <!-- Hidden date input for JS compatibility -->
+            <input type="hidden" id="menuDate" value="" />
+            <div class="form-grid" style="margin-bottom:var(--space-4);">
+              <div class="field"><label>Текущий статус</label><input type="hidden" id="menuStatus" value="draft" />
+                <div id="menuStatusText" style="padding:0.8rem 0.9rem;border-radius:var(--radius-lg);border:1px solid var(--color-border);background:var(--color-surface-2);font-size:14px;font-weight:600;color:var(--color-text);">Черновик</div>
+              </div>
+              <div class="field full">
+                <label>Добавить блюдо в меню</label>
+                <input type="hidden" id="dishPicker" value="" />
+                <div id="dishPickerList" style="max-height:180px;overflow-y:auto;border:1px solid var(--color-border);border-radius:var(--radius-md);background:var(--color-surface-2);"></div>
+              </div>
+            </div>
+            <div class="row-actions" style="justify-content:flex-start;">
+              <button class="btn btn-primary" id="addDishToMenu" type="button">Добавить в меню</button>
+              <button class="btn btn-secondary" id="publishMenuBtn" type="button">Опубликовать</button>
+            </div>
+            <div class="menu-groups" id="editorMenuGroups"></div>
+          </article>
+        </section>
+
+        <section class="view" id="view-users-admin">
+  <article class="panel">
+    <div class="panel-header">
+      <div>
+        <h3>Пользователи приложения</h3>
+        <p>Управление аккаунтами: просмотр, блокировка, удаление.</p>
+      </div>
+      <button type="button" class="btn btn-primary" style="font-size:13px;" onclick="window.renderUsersAdmin && window.renderUsersAdmin()">↻ Обновить список</button>
+    </div>
+    <div style="display:flex;gap:0.5rem;align-items:center;padding:0.6rem 0;border-bottom:1px solid var(--color-border);margin-bottom:0.5rem;flex-wrap:wrap;">
+      <div id="usersRoleFilter" data-value=""
+        style="display:flex;gap:0.3rem;background:var(--color-surface-2);border-radius:var(--radius-full,2rem);padding:3px;border:1px solid var(--color-border);">
+        <button type="button" data-role=""
+          style="padding:0.25rem 0.7rem;border-radius:var(--radius-full,2rem);font-size:12px;font-weight:600;border:none;cursor:pointer;background:var(--color-primary);color:#fff;transition:all .15s;"
+          onclick="this.parentNode.querySelectorAll('button').forEach(function(b){b.style.background='transparent';b.style.color='var(--color-text-muted)'});this.style.background='var(--color-primary)';this.style.color='#fff';this.parentNode.setAttribute('data-value','');window.renderUsersAdmin&&window.renderUsersAdmin();">Все</button>
+        <button type="button" data-role="admin"
+          style="padding:0.25rem 0.7rem;border-radius:var(--radius-full,2rem);font-size:12px;font-weight:600;border:none;cursor:pointer;background:transparent;color:var(--color-text-muted);transition:all .15s;"
+          onclick="this.parentNode.querySelectorAll('button').forEach(function(b){b.style.background='transparent';b.style.color='var(--color-text-muted)'});this.style.background='var(--color-primary)';this.style.color='#fff';this.parentNode.setAttribute('data-value','admin');window.renderUsersAdmin&&window.renderUsersAdmin();">Админ</button>
+        <button type="button" data-role="staff"
+          style="padding:0.25rem 0.7rem;border-radius:var(--radius-full,2rem);font-size:12px;font-weight:600;border:none;cursor:pointer;background:transparent;color:var(--color-text-muted);transition:all .15s;"
+          onclick="this.parentNode.querySelectorAll('button').forEach(function(b){b.style.background='transparent';b.style.color='var(--color-text-muted)'});this.style.background='var(--color-primary)';this.style.color='#fff';this.parentNode.setAttribute('data-value','staff');window.renderUsersAdmin&&window.renderUsersAdmin();">Сотрудники</button>
+        <button type="button" data-role="visitor"
+          style="padding:0.25rem 0.7rem;border-radius:var(--radius-full,2rem);font-size:12px;font-weight:600;border:none;cursor:pointer;background:transparent;color:var(--color-text-muted);transition:all .15s;"
+          onclick="this.parentNode.querySelectorAll('button').forEach(function(b){b.style.background='transparent';b.style.color='var(--color-text-muted)'});this.style.background='var(--color-primary)';this.style.color='#fff';this.parentNode.setAttribute('data-value','visitor');window.renderUsersAdmin&&window.renderUsersAdmin();">Посетители</button>
+      </div>
+      <input id="usersSearch" type="text" oninput="window.renderUsersAdmin&&window.renderUsersAdmin()" placeholder="🔍 Поиск…"
+        style="flex:1;min-width:100px;padding:0.3rem 0.7rem;border-radius:var(--radius-full,2rem);border:1px solid var(--color-border);background:var(--color-surface-2);font-size:13px;outline:none;" />
+    </div>
+    <div id="usersAdminStats" style="display:flex;gap:1rem;padding:0.5rem 0;flex-wrap:wrap;margin-bottom:0.5rem;"></div>
+    <div id="usersAdminList"></div>
+  </article>
+</section>
+
+        <section class="view" id="view-orders-line"><div class="queue-grid"><article class="panel"><div class="panel-header"><div><h3>Линейка заказов</h3><p>Сотрудник управляет кухонными статусами оплаченных заказов. Администратор видит все заказы в режиме просмотра.</p></div></div><div class="order-line" id="ordersLine"></div></article><article class="panel"><div class="panel-header"><div><h3>Этапы работы</h3><p>Быстрый контроль потока на раздаче.</p></div></div><div class="line-steps"><div class="line-step"><span class="dot done"></span><span>Оплачено посетителем</span></div><div class="line-step"><span class="dot active"></span><span>Готовится на кухне</span></div><div class="line-step"><span class="dot"></span><span>Готово к выдаче</span></div><div class="line-step"><span class="dot"></span><span>Выдано посетителю</span></div></div></article></div></section>
+
+        <section class="view" id="view-visitor-menu"><div class="customer-grid"><article class="panel"><div class="panel-header"><div><h3>Меню для заказа</h3><p>Посетитель выбирает блюда на текущий день и будущие дни с опубликованным меню.</p></div><span class="role-tag">Посетитель столовой</span></div><div class="visitor-calendar panel-shell"><div class="visitor-calendar-head"><button type="button" class="calendar-nav-btn" id="visitorPrevMonth" aria-label="Предыдущий месяц">‹</button><strong id="visitorCalendarTitle">Апрель 2026</strong><button type="button" class="calendar-nav-btn" id="visitorNextMonth" aria-label="Следующий месяц">›</button></div><div class="visitor-calendar-weekdays"><span>Пн</span><span>Вт</span><span>Ср</span><span>Чт</span><span>Пт</span><span>Сб</span><span>Вс</span></div><div class="visitor-calendar-grid" id="visitorDateTabs"></div><div class="visitor-calendar-legend"><span><i class="dot published"></i>Опубликовано</span><span><i class="dot selected"></i>Выбрано</span></div></div><div class="info-row"><strong>К какому времени приготовить заказ</strong><p>Выберите желаемое время выдачи, чтобы кухня видела дедлайн приготовления.</p><div class="time-slots" id="readyTimeSlots"></div></div><div class="customer-menu-grid" id="visitorMenuGrid"></div></article><article class="panel order-summary"><div class="panel-header"><div><h3>Мой заказ</h3><p>Компактная сводка по текущей корзине.</p></div></div><div class="compact-order-box"><strong id="selectedOrderDateLabel">24 апр</strong><div class="compact-meta"><span class="compact-chip" id="selectedReadyTime">12:30</span><span class="compact-chip" id="selectedPaymentMethod">Не выбран способ оплаты</span></div><p id="selectedOrderDateSub" class="muted">Выберите блюда из опубликованного меню.</p></div><div class="order-items compact" id="visitorCart"></div><div class="compact-order-box"><div class="summary-row total"><span>Итого</span><span id="cartTotal">0 ₽</span></div><div class="row-actions" style="justify-content:flex-start;"><button class="btn btn-primary" id="goToPaymentBtn">Перейти к оплате</button></div></div></article></div></section>
+
+        <section class="view" id="view-payments">
+        <div class="section-header">
+          <h2>Оплата заказа</h2>
+          <p class="section-subtitle">Привяжите банковскую карту и оплатите заказ</p>
+        </div>
+
+        <div class="payment-grid">
+          <article class="panel">
+            <div class="panel-header">
+              <h3>1. Выберите заказ</h3>
+            </div>
+            <div class="panel-body">
+              <div id="unpaidOrdersList" class="orders-list">
+                <div class="empty-state">У вас нет неоплаченных заказов</div>
+              </div>
+            </div>
+          </article>
+
+          <article class="panel">
+            <div class="panel-header">
+              <h3>2. Банковские карты</h3>
+            </div>
+            <div class="panel-body">
+              <div id="cardsList" class="cards-list"></div><div class="payment-hint">Выберите карту кликом по карточке. Выбранная карта подсветится синим и покажет галочку.</div>
+              <button class="add-card-btn" id="addCardBtn">
+                <span>+ Добавить банковскую карту</span>
+              </button>
+            </div>
+          </article>
+
+          <article class="panel">
+            <div class="panel-header">
+              <h3>3. Оплата</h3>
+            </div>
+            <div class="panel-body">
+              <button class="btn btn-primary btn-full" id="payOrderBtn" disabled>
+                Оплатить заказ
+              </button>
+              <div id="paymentMessage" class="message"></div>
+            </div>
+          </article>
+        </div>
+
+        <!-- Модальное окно добавления карты -->
+        <div class="card-modal-overlay" id="cardModalOverlay">
+          <div class="card-modal">
+            <div class="card-modal-header">
+              <h3>Добавить банковскую карту</h3>
+              <button class="card-modal-close" id="closeCardModal">&times;</button>
+            </div>
+
+            <div class="card-modal-body">
+              <div class="card-visual">
+                <div class="card-visual-label">НОМЕР КАРТЫ</div>
+                <div class="card-visual-number" id="visualCardNumber">•••• •••• •••• ••••</div>
+                <div class="card-visual-row">
+                  <div>
+                    <div class="card-visual-label">ВЛАДЕЛЕЦ</div>
+                    <div id="visualCardHolder">CARDHOLDER NAME</div>
+                  </div>
+                  <div>
+                    <div class="card-visual-label">СРОК</div>
+                    <div id="visualCardExpiry">••/••</div>
+                  </div>
+                </div>
+              </div>
+
+              <form id="cardForm">
+                <div class="card-form-group">
+                  <label for="cardNumber">Номер карты</label>
+                  <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19" autocomplete="cc-number"/>
+                  <div class="card-error-message" id="cardNumberError">Введите корректный номер карты (16 цифр)</div>
+                </div>
+
+                <div class="card-form-group">
+                  <label for="cardHolder">Имя владельца (как на карте)</label>
+                  <input type="text" id="cardHolder" placeholder="IVAN IVANOV" autocomplete="cc-name" style="text-transform: uppercase"/>
+                  <div class="card-error-message" id="cardHolderError">Введите имя владельца (минимум 3 символа)</div>
+                </div>
+
+                <div class="card-form-row">
+                  <div class="card-form-group">
+                    <label for="cardExpiry">Срок действия</label>
+                    <input type="text" id="cardExpiry" placeholder="ММ/ГГ" maxlength="5" autocomplete="cc-exp"/>
+                    <div class="card-error-message" id="cardExpiryError">Формат: ММ/ГГ (например, 12/25)</div>
+                  </div>
+
+                  <div class="card-form-group">
+                    <label for="cardCVV">CVV</label>
+                    <input type="text" id="cardCVV" placeholder="123" maxlength="3" autocomplete="cc-csc"/>
+                    <div class="card-error-message" id="cardCVVError">3 цифры на обороте карты</div>
+                  </div>
+                </div>
+              </form>
+            </div>
+
+            <div class="card-modal-footer">
+              <button class="card-modal-cancel" id="cancelCardBtn">Отмена</button>
+              <button class="card-modal-save" id="saveCardBtn" disabled>Сохранить карту</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+        
+      </main>
+    </div>
+  </div>
+
+  
+<div class="dialog-backdrop" id="dishDialog" aria-hidden="true">
+  <div class="dialog-panel" role="dialog" aria-modal="true" aria-labelledby="dishDialogTitle">
+    <div class="dialog-header">
+      <div>
+        <h3 id="dishDialogTitle">Добавить блюдо</h3>
+        <p class="muted" id="dishDialogSubtitle">Форма нового блюда в справочнике.</p>
+      </div>
+      <button type="button" class="dialog-close" id="closeDishDialog" aria-label="Закрыть">✕</button>
+    </div>
+    <div class="dialog-body">
+      <article class="panel-shell">
+        <div class="panel-header"><div><h3 id="dishFormTitle">Добавить блюдо</h3><p id="dishFormSubtitle">Форма нового блюда в справочнике.</p></div><span class="status-badge draft" id="dishFormBadge">Черновик</span></div>
+        <form id="dishForm" class="menu-builder"><div class="form-grid"><div class="field"><label for="dishName">Название</label><input id="dishName" name="name" placeholder="Например, Куриный суп" required /></div><div class="field"><label for="dishCategory">Категория</label><select id="dishCategory" name="category"><option>Салаты</option><option>Супы</option><option>Горячее</option><option>Гарниры</option><option>Напитки</option><option>Десерты</option></select></div><div class="field"><label for="dishWeight">Вес</label><input id="dishWeight" name="weight" placeholder="250 г" required /></div><div class="field"><label for="dishPrice">Цена</label><input id="dishPrice" name="price" type="number" min="0" placeholder="320" required /></div></div><div class="field"><label for="dishDescription">Описание</label><textarea id="dishDescription" name="description" rows="4" placeholder="Краткий состав блюда"></textarea></div><div class="upload-zone"><div><strong>Фото блюда</strong><p class="muted">Можно загрузить изображение и сразу увидеть превью.</p></div><div class="upload-preview" id="uploadPreview"><span class="faint">Фото ещё не выбрано</span></div><input id="dishPhoto" name="photo" type="file" accept="image/*" /></div><input type="hidden" id="editingDishId" value="" /><div class="row-actions" style="justify-content:flex-start;"><button type="submit" class="btn btn-primary" id="dishSubmitBtn">Сохранить блюдо</button><button type="reset" class="btn btn-secondary" id="dishResetBtn">Очистить</button></div></form>
+      </article>
+    </div>
+  </div>
+</div>
+
+  <!-- ========================================= -->
+  <!-- СКРИПТЫ v7.0.0 HYBRID -->
+  <!-- ========================================= -->
+  <!-- Сохранен полный функционал v3.7.8 + модульная структура -->
+
+  <script src="scripts/config.js"></script>
+  <script src="scripts/app.js"></script>
+</body>
+</html>
